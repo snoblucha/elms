@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = Elms::VERSION
   s.authors     = ["Petr Snobl"]
   s.email       = ["snoblucha@email.cz"]
-  s.homepage    = "TODO"
+  s.homepage    = "https://github.com/snoblucha/elms"
   s.summary     = "Provides export class for the ELMS service."
   s.description = "Elms service."
   s.license     = "MIT"
@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["test/**/*"]
 
-  s.add_dependency "rails", "~> 4.2.0"
+  #s.add_dependency "rails", "~> 4.2.0"
 
-  s.add_development_dependency "sqlite3"
+  #s.add_development_dependency "sqlite3"
 end
