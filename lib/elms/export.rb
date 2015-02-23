@@ -137,7 +137,7 @@ module Elms
 # @param [Integer] tax DPH in %
     def add_product(product_name, product_price, peaces, tax)
       @data[:products]<< {:product => product_name, :price => product_price, :pcs => peaces, :tax => tax}
-      @data[:total] += product_price
+      @data[:total] += product_price*peaces
       self
     end
 
@@ -195,7 +195,7 @@ module Elms
       if (currency != CURRENCY_CZK and currency != CURRENCY_EUR)
         throw 'Invalid currency :'+currency
       end
-      @data[:currency] = currency
+      @data[:currency_id] = currency
       self
     end
 
@@ -204,25 +204,14 @@ module Elms
       require 'base64'
       require 'json'
       require 'net/http'
+      require 'curl'
 
-      encoded = Base64.encode64(@data.to_json.to_s)
+      encoded = Base64.strict_encode64(@data.to_json.to_s)
 
       # http://fulfillment.elmsservice.cz/orders/import?data=
       send_to_url = "http://fulfillment.elmsservice.cz/orders/import?data=#{encoded}"
-
-      url = URI.parse("http://fulfillment.elmsservice.cz/orders/import")
-
-      req = Net::HTTP::Get.new(send_to_url)
-      res = Net::HTTP.start(url.host, url.port) { |http|
-
-        Rails.logger.info @data.to_json
-        response = http.request(req)
-
-      }
-
-      Rails.logger.info "Request sent "
-      Rails.logger.info res.code
-      res.body
+      res = ::Curl.get(send_to_url)
+      res.body_str
 
     end
   end
